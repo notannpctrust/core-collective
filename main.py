@@ -55,3 +55,4 @@ def product_page(product_id):
     connection.close()
 
     return render_template("product.html.jinja", product=result)
+
