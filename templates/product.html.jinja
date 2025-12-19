@@ -16,13 +16,29 @@
      <h1 class="text-3xl font-bold underline">
       Hello world!
     
-    
+       
     </h1>
 
     
     {{product ['Name'] }}</body>h1
     <img src="{{product ['Image']}}">
     {{product ['Description']}}
+    
+
+<div>
+    <form method="post">
+        <label>Qty:</label>
+        <input type="number" name="qty" value="1" min="1" max="2" class="border rounded px-2 py-1 w-16 text-lg">
+
+
+        <button class="bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg shadow hover:bg-indigo-700">
+        Add to Cart
+        </button>
+    
+    </form>
+    
+
+</div>
     
     </body>
 </html>

@@ -1,5 +1,6 @@
 from flask import Flask, render_template,redirect,abort,request,url_for,flash
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user,UserMixin    
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
+from werkzeug.security import check_password_hash
 
 
 import pymysql
@@ -52,6 +53,7 @@ def browse():
 
 @app.route("/product/<product_id>")
 def product_page(product_id):
+
     connection = connect_db()
 
     cursor = connection.cursor()
@@ -67,6 +69,27 @@ def product_page(product_id):
         abort(404)
 
     return render_template("product.html.jinja", product=result)
+
+
+
+@app.route("/product/<product_id>/add_to_cart", methods=["POST"])
+@login_required
+def add_to_cart(product_id):
+   
+    quantity = request.form["qty"]
+   
+    connection = connect_db()
+    cursor = connection.cursor
+
+    cursor.execute("""
+        INSERT INTO `Cart`(`Quantity`,`ProductID`,`UserID)
+        VALUES(%s,%s,%s)
+     """(quantity,product_id,current_user.id),)
+    
+    connection.close
+   
+
+    return redirect ('/cart')
 
 
 
@@ -97,8 +120,25 @@ def login():
         return redirect ("/browse")
 
     return render_template("login.html.jinja")
+class User(UserMixin):
+    def __init__(self, user_data):
+        self.id = user_data["ID"]
+        self.email = user_data["Email"]
+        self.password_hash = user_data["Password"]
+
+    @staticmethod
+    def get(user_id):
+        connection = connect_db()
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM User WHERE ID = %s", (user_id,))
+        user_data = cursor.fetchone()
+        connection.close()
+        if user_data:
+            return User(user_data)
+        return None
 
 if __name__ == "main":
+    app.run(debug=True)
     app.run(debug=True)
 
 
