@@ -93,6 +93,22 @@ def add_to_cart(product_id):
 
 
 
+@app.route('/cart')
+@login_required
+def cart():
+    connection = connect_db()
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT * FROM `Cart`
+        JOIN ` Product` ON  `Product`.`ID` = `Cart`.`ProductID`
+        WHERE `UserID` = %s
+
+    """, (current_user.id))
+    
+    return render_template("cart.html.jinja")
+
 
 @app.route("/login", methods=["GET","POST"])
 def login():
@@ -116,8 +132,9 @@ def login():
             flash("No User found")
         elif password != result["Password"]:
             flash("Incorrect password")
-        else:login_user(User (result))
-        return redirect ("/browse")
+        else:
+            login_user(User (result))
+            return redirect ("/browse")
 
     return render_template("login.html.jinja")
 class User(UserMixin):
