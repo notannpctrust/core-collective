@@ -31,9 +31,9 @@ def connect_db():
     return conn
 
 
-@app.route("/")
+@app.route("/") 
 def index():
-    return render_template("homepage.html.jinja")
+   return render_template("homepage.html.jinja")
 
 
 @app.route("/browse")
@@ -172,5 +172,60 @@ def logout():
 def load_user(user_id):
     return User.get(user_id)
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+       username = request.form["username"]
 
 
+       email = request.form["email"]
+
+
+       password = request.form["password"]
+       confirm_password = request.form["confirm_password"]
+
+
+       address = request.form["address"]
+
+
+       if password != confirm_password:
+           flash("PASSWORDS DO NOT MATCH >:(")
+       elif len(password) < 8:
+           flash("Password is to Short")
+       else:
+           connect_db
+
+
+           connection = connect_db()
+  
+           cursor = connection.cursor()
+           try:
+               cursor.execute("""
+                   INSERT INTO `User` (`Username`, `Email`, `Password`, `Address`)
+                   VALUES (%s, %s, %s, %s)
+               """, ( username ,email ,password ,address))
+               connection.close()
+           except pymysql.err.IntegrityError:
+               flash("User with that email already exist")
+           else:
+               return redirect('/login')
+
+    return render_template("register.html.jinja")
+
+@app.route("/cart/<product_id>/update_qty", methods=["POST"])
+@login_required
+def update_cart(product_id):
+    new_qty = request.form["qty"]
+
+    connection = connect_db
+    cursor = connection.cursor()
+
+    cursor.execute("""
+    UPDATE `Cart`
+    SET `Quantity` = %s
+    WHERE `ProductID` = %s AND `UserID = %s
+    """,(new_qty, product_id, current_user.id)) 
+    
+    connection.close()
+
+    return redirect('/cart')

@@ -16,7 +16,17 @@
             <div class="cart-row">
                 <img src ="{{x['Image']}}">
                 <div>{{x['Name']}}</div>
-                <div>{{x['Quantity']}}</div>
+                <div>
+                    <form method ="post" action="/cart/{{ x['ProductID'] }}/update_qty">
+                    <input class="w-full" name ="qty" type="number" value="{{ x['Quantity']}}">
+                     {{x['Quantity']}}
+
+
+                    </form>
+                    
+                    
+                   
+                </div>
                 <div>F{{x['Price']}}</div>
                 <div>F{{ x['Price'] * x['Quantity'] }}</div>
             
