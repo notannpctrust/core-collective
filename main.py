@@ -79,14 +79,11 @@ def add_to_cart(product_id):
     quantity = request.form["qty"]
    
     connection = connect_db()
-    cursor = connection.cursor
+    cursor = connection.cursor()
 
-    cursor.execute("""
-        INSERT INTO `Cart`(`Quantity`,`ProductID`,`UserID)
-        VALUES(%s,%s,%s)
-     """(quantity,product_id,current_user.id),)
+    cursor.execute(""" INSERT INTO `Cart`(`Quantity`,`ProductID`,`UserID`)VALUES(%s, %s, %s) """,(quantity,product_id,current_user.id))
     
-    connection.close
+    connection.close()
    
 
     return redirect ('/cart')
@@ -102,12 +99,18 @@ def cart():
 
     cursor.execute("""
         SELECT * FROM `Cart`
-        JOIN ` Product` ON  `Product`.`ID` = `Cart`.`ProductID`
+        JOIN `Product` ON  `Product`.`ID` = `Cart`.`ProductID`
         WHERE `UserID` = %s
 
     """, (current_user.id))
+
+    result = cursor.fetchall()
     
-    return render_template("cart.html.jinja")
+    return render_template("cart.html.jinja",cart=result)
+
+
+
+
 
 
 @app.route("/login", methods=["GET","POST"])
@@ -201,7 +204,7 @@ def signup():
            cursor = connection.cursor()
            try:
                cursor.execute("""
-                   INSERT INTO `User` (`Username`, `Email`, `Password`, `Address`)
+                   INSERT INTO `User` (`Name`, `Email`, `Password`, `Address`)
                    VALUES (%s, %s, %s, %s)
                """, ( username ,email ,password ,address))
                connection.close()

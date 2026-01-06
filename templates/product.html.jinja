@@ -14,7 +14,7 @@
 
   <body>
      <h1 class="text-3xl font-bold underline">
-      Hello world!
+      This is the item you are currently viewing.
     
        
     </h1>
@@ -26,9 +26,9 @@
     
 
 <div>
-    <form method="post">
+    <form method="post" action="/product/{{ product['ID'] }}/add_to_cart">
         <label>Qty:</label>
-        <input type="number" name="qty" value="1" min="1" max="2" class="border rounded px-2 py-1 w-16 text-lg">
+        <input type="number" name="qty" value="1" min="1" class="border rounded px-2 py-1 w-16 text-lg">
 
 
         <button class="bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg shadow hover:bg-indigo-700">
