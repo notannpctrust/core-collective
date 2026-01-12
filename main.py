@@ -232,3 +232,103 @@ def update_cart(product_id):
     connection.close()
 
     return redirect('/cart')
+
+@app.route("/checkout", methods =["POST","GET"])
+@login_required
+def checkout():
+   
+   connection = connect_db()
+
+
+   cursor = connection.cursor()
+
+
+   cursor.execute("""
+       SELECT * FROM `Cart`
+       Join `Product` ON `Product`.`ID` = `Cart`.`ProductID`
+       WHERE `UserID` = %s            
+                 
+   """,(current_user.id))
+
+
+   result = cursor.fetchall()
+
+
+   if request.method == 'POST':
+       # create the sale in the database
+       cursor.execute("INSERT INTO `Sale` (`UserID`) VALUES (%s)", ( current_user.id, ) )
+       #store products bought
+       sale = cursor.lastrowid
+       for item in result:
+           cursor.execute( """
+                INSERT INTO `SaleCart`
+                     (`SaleID`,`ProductID`, `Quantity`)
+                VALUES
+                     (%s,%s,%s)
+                             
+                         
+                       """  , (sale, item['ProductID'], item['Quantity']))
+       # empty cart
+       cursor.execute("DELETE FROM `Cart` WHERE `UserID` = %s", (current_user.id,))
+       #thank you screen
+
+
+       return redirect('/thank-you')      
+
+
+   total = 0
+
+
+   for item in result:
+       total += item["Price"] * item["Quantity"]
+
+
+   connection.close()
+
+
+   return render_template("checkout.html.jinja", cart=result, total=total)
+
+
+
+
+
+@app.route("/cart/<product_id>/remove", methods=['POST'])
+@login_required
+def remove_from_cart(product_id):
+
+
+   connection = connect_db()
+
+
+   cursor = connection.cursor()
+
+
+   cursor.execute("""
+       DELETE FROM Cart
+       WHERE ProductID = %s AND UserID = %s
+ """, (product_id, current_user.id))
+  
+   connection.close()
+
+
+   return redirect ("/cart")
+
+
+app.route("/order")
+@login_required
+def order():
+
+    connection = connect_db
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT
+        `SALE`.`ID`,
+        `SALE`.`Timestamp
+        
+
+    
+                   
+    """)
+
+
