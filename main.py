@@ -324,11 +324,15 @@ def order():
     cursor.execute("""
         SELECT
         `SALE`.`ID`,
-        `SALE`.`Timestamp
+        `SALE`.`Timestamp`,
+        SUM(`SaleProduct`.`Quantity`) AS 'Quantity'
+        SUM(`SaleProduct`.`Quantity` * `Product`.`Price`) AS 'Total'
+    FROM `Sale`
+    JOIN `SaleProduct` ON `SaleProduct`.`SaleID` = `Sale`.`ID`
+    JOIN `Product` ON `Product`.`ID` = `SaleProduct`.`ProductID`
+    WHERE `UserID` = %s
+    GROUP BY `SALE`.`ID`
         
-
-    
-                   
-    """)
+    """, (current_user.id) )
 
 

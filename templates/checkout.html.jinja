@@ -1,138 +1,113 @@
-
-
 <!doctype html>
 <html>
 <head>
- <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
- <title>Checkout | EZ-BAM</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Checkout | EZ-BAM</title>
 </head>
 
+<header class="bg-white shadow sticky top-0 z-50">
+      <nav class="max-w-6xl mx-auto flex items-center justify-between p-4">
+        <div class="text-2xl font-bold text-indigo-600">Core Collective</div>
+        <ul class="flex space-x-6">
+          <li><a href="/" class="hover:text-indigo-600">Home</a></li>
+          <li><a href="/browse" class="hover:text-indigo-600">Browse</a></li>
+          <li><a href="/cart" class="hover:text-indigo-600">Cart</a></li>
+          <li><a href="/login" class="hover:text-indigo-600">Login</a></li>
+          <li><a href="/signup" class="hover:text-indigo-600">Register</a></li>
+          <li><a href="/checkout" class="hover:text-indigo-600">Checkout</a></li>
+        </ul>
+      </nav>
+    </header>
 
+<body class="bg-blue-50 min-h-screen font-sans text-gray-800">
 
-
-<body class="bg-gradient-to-b from-gray-700 to-gray-500 shadow-md px-6 py-3 text-gray-400 min-h-screen font-sans">
   
 
-
-
-
-
-
-
-
-
-<form method="post" action="/checkout">
-   <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 px-6 py-10">
-
-
-
-
-       <div class="lg:col-span-2 bg-gray-70 p-8 rounded-lg shadow-md bg-gradient-to-b from-black to-gray-700 shadow-md">
-
-
-
-
-           <h2 class="text-2xl font-bold mb-6">Checkout</h2>
-
-
-
-
-           <input name="full_name" required placeholder="Full Name"
-               class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-
-
-
-
-           <input name="address" required placeholder="Street Address"
-               class="w-full border border-white-300 rounded-lg px-4 py-3 mb-4 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-
-
-
-
-           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-               <input name="city" required placeholder="City"
-                   class="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-               <input name="state" placeholder="State/Province"
-                   class="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-               <input name="zip" required placeholder="Zip Code"
-                   class="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-           </div>
-
-
-
-
-          
-
-
-
-
-          
-
-
-
-
-       </div>
-
-
-
-
-       <div class="bg-gradient-to-b from-black to-gray-700 rounded-lg shadow-md h-fit sticky top-10">
-
-
-
-
-           <h2 class="text-2xl font-bold mb-6 font-sans">Order Summary</h2>
-
-
-
-
-           <div class="space-y-7 mb-9">
-               {% for x in cart %}
-               <div class="flex justify-between items-center text-sm">
-                   <div class="flex items-center gap-3">
-                       <img src="{{ x['Image'] }}" class="w-12 h-12 rounded border">
-                       <div>
-                           <p class="font-medium">{{ x['Name'] }}</p>
-                           <p class="text-gray-500 font-sans">Qty {{ x['Quantity'] }}</p>
-                       </div>
-                   </div>
-                   <span>${{ x['Price'] * x['Quantity'] }}</span>
-               </div>
-               {% endfor %}
-           </div>
-
-
-
-
-           <div class="border-t pt-4 space-y-2 text-sm font-sans">
-               <div class="flex justify-between">
-                   <span>Subtotal</span>
-                   <span>${{ total }}</span>
-               </div>
-               <div class="flex justify-between font-semibold text-lg font-sans">
-                   <span>Total</span>
-                   <span>${{ total }}</span>
-               </div>
-           </div>
-
-
-
-
-           <button
-               type="submit"
-               class="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg text-lg font-sans hover:bg-blue-700 transition focus:ring-2 focus:ring-blue-500 focus:outline-none">
-               Place Order
-           </button>
-
-
-
-
-       </div>
-
-
-
-
-   </div>
-</form>
+  <form method="post" action="/checkout">
+    <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+      <!-- LEFT SIDE: CHECKOUT FORM -->
+      <div class="lg:col-span-2 space-y-8">
+        <div class="bg-white rounded-3xl shadow-xl p-10 space-y-6">
+          <h2 class="text-3xl font-bold text-blue-700">Checkout Information</h2>
+
+          <div class="space-y-5">
+            <input name="full_name" required placeholder="Full Name"
+                   class="w-full border border-blue-200 rounded-xl px-5 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+
+            <input name="address" required placeholder="Street Address"
+                   class="w-full border border-blue-200 rounded-xl px-5 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <input name="city" required placeholder="City"
+                     class="border border-blue-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+              <input name="state" placeholder="State/Province"
+                     class="border border-blue-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+              <input name="zip" required placeholder="Zip Code"
+                     class="border border-blue-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+            </div>
+
+            <input name="email" type="email" required placeholder="Email Address"
+                   class="w-full border border-blue-200 rounded-xl px-5 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+
+            <input name="phone" type="tel" placeholder="Phone Number"
+                   class="w-full border border-blue-200 rounded-xl px-5 py-4 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+          </div>
+
+          <button type="submit"
+                  class="mt-6 w-full bg-blue-600 text-white font-bold py-4 rounded-2xl hover:bg-blue-700 transition">
+            Place Order
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE: COMPLETE YOUR ORDER + ORDER SUMMARY -->
+      <div class="space-y-8">
+        <div class="bg-white rounded-3xl shadow-xl p-8">
+          <h2 class="text-3xl font-bold text-blue-700 mb-4">Complete Your Order</h2>
+          <p class="text-gray-600 text-sm">Review your items and make sure everything is correct before placing your order.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-xl p-8 space-y-6">
+          <h2 class="text-2xl font-bold text-blue-700">Order Summary</h2>
+
+          <div class="space-y-4 max-h-[400px] overflow-y-auto">
+            {% for x in cart %}
+            <div class="flex justify-between items-center p-3 bg-blue-50 rounded-xl">
+              <div class="flex items-center gap-3">
+                <img src="{{ x['Image'] }}" class="w-14 h-14 rounded border border-blue-200">
+                <div>
+                  <p class="font-semibold">{{ x['Name'] }}</p>
+                  <p class="text-blue-400 text-sm">Qty {{ x['Quantity'] }}</p>
+                </div>
+              </div>
+              <span class="font-semibold">${{ x['Price'] * x['Quantity'] }}</span>
+            </div>
+            {% endfor %}
+          </div>
+
+          <div class="border-t border-blue-200 pt-4 space-y-2">
+            <div class="flex justify-between text-blue-400">
+              <span>Subtotal</span>
+              <span>${{ total }}</span>
+            </div>
+            <div class="flex justify-between font-semibold text-lg">
+              <span>Total</span>
+              <span>${{ total }}</span>
+            </div>
+          </div>
+
+          <button type="submit"
+                  class="w-full bg-blue-600 text-white font-bold py-3 rounded-2xl hover:bg-blue-700 transition">
+            Place Order
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </form>
+
+</body>
+</html>
