@@ -9,7 +9,24 @@
   </head>
 
    
-    
+  <header class="bg-white shadow sticky top-0 z-50">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between p-4">
+      <div class="text-2xl font-bold text-indigo-600">Core Collective</div>
+      <ul class="flex space-x-6">
+        <li><a href="/" class="hover:text-indigo-600">Home</a></li>
+        <li><a href="/browse" class="hover:text-indigo-600">Browse</a></li>
+        <li><a href="/cart" class="hover:text-indigo-600">Cart</a></li>
+        <li class="relative group border border-red-500">
+         <a href="#" class="hover:text-indigo-600">Account</a>
+          <ul class="absolute hidden group-hover:flex flex-col bg-white shadow-lg rounded mt-1 z-10 border border-blue-500">
+            <li><a href="/login" class="block px-4 py-2 hover:bg-indigo-100">Login</a></li>
+            <li><a href="/signup" class="block px-4 py-2 hover:bg-indigo-100">Register</a></li>
+          </ul>
+        </li>
+        <li><a href="/checkout" class="hover:text-indigo-600">Checkout</a></li>
+      </ul>
+    </nav>
+  </header>
 
   
 
@@ -17,20 +34,8 @@
 
   <body class="bg-gray-50 text-gray-800">
 
-    
-    <header class="bg-white shadow sticky top-0 z-50">
-      <nav class="max-w-6xl mx-auto flex items-center justify-between p-4">
-        <div class="text-2xl font-bold text-indigo-600">Core Collective</div>
-        <ul class="flex space-x-6">
-          <li><a href="/" class="hover:text-indigo-600">Home</a></li>
-          <li><a href="/browse" class="hover:text-indigo-600">Browse</a></li>
-          <li><a href="/cart" class="hover:text-indigo-600">Cart</a></li>
-          <li><a href="/login" class="hover:text-indigo-600">Login</a></li>
-          <li><a href="/signup" class="hover:text-indigo-600">Register</a></li>
-          <li><a href="/checkout" class="hover:text-indigo-600">Checkout</a></li>
-        </ul>
-      </nav>
-    </header>
+
+  
 
   
     <section class="max-w-6xl mx-auto px-4 py-20 flex flex-col md:flex-row items-center">

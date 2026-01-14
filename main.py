@@ -60,15 +60,17 @@ def product_page(product_id):
 
     cursor.execute("SELECT * FROM `Product` WHERE `ID` = %s", ( product_id ) )
 
-
-    result = cursor.fetchone()
+    cursor.execute(
+        """SELECT * FROM Review 
+        JOIN User ON Review.UserID = User.ID
+        WHERE ProductID = %s""", (product_id,))
 
     connection.close()
 
-    if result is None:
+    if not product_id:
         abort(404)
 
-    return render_template("product.html.jinja", product=result)
+    return render_template("product.html.jinja", product= product_id)
 
 
 
@@ -334,5 +336,12 @@ def order():
     GROUP BY `SALE`.`ID`
         
     """, (current_user.id) )
+
+
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html.jinja"), 404
 
 
