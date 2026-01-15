@@ -59,18 +59,21 @@ def product_page(product_id):
     cursor = connection.cursor()
 
     cursor.execute("SELECT * FROM `Product` WHERE `ID` = %s", ( product_id ) )
+    products = cursor.fetchone()
 
     cursor.execute(
         """SELECT * FROM Review 
         JOIN User ON Review.UserID = User.ID
-        WHERE ProductID = %s""", (product_id,))
+        WHERE `ProductID` = %s""", (product_id,))
+    
+    reviews = cursor.fetchall()
 
     connection.close()
 
     if not product_id:
         abort(404)
 
-    return render_template("product.html.jinja", product= product_id)
+    return render_template("product.html.jinja", product= products,reviews = reviews)
 
 
 

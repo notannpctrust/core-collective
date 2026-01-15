@@ -7,19 +7,7 @@
   </head>
 
 
-    <header class="bg-white shadow sticky top-0 z-50">
-      <nav class="max-w-6xl mx-auto flex items-center justify-between p-4">
-        <div class="text-2xl font-bold text-indigo-600">Core Collective</div>
-        <ul class="flex space-x-6">
-          <li><a href="/" class="hover:text-indigo-600">Home</a></li>
-          <li><a href="/browse" class="hover:text-indigo-600">Browse</a></li>
-          <li><a href="/cart" class="hover:text-indigo-600">Cart</a></li>
-          <li><a href="/login" class="hover:text-indigo-600">Login</a></li>
-          <li><a href="/signup" class="hover:text-indigo-600">Register</a></li>
-          <li><a href="/checkout" class="hover:text-indigo-600">Checkout</a></li>
-        </ul>
-      </nav>
-    </header>
+    
 
 
 
@@ -32,7 +20,7 @@
     </h1>
 
     
-    {{product ['Name'] }}</body>h1
+    {{product ['Name'] }}</body>
     <img src="{{product ['Image']}}">
     {{product ['Description']}}
     
@@ -49,8 +37,41 @@
     
     </form>
     
-    {{x["Comments"]}}
+
 </div>
     
+
+    <div class="space-y-4">
+        {% for x in reviews %}
+          <div class="border rounded p-4 bg-white shadow-sm">
+          <p>{{x["Name"]}}</p>
+            <div class="font-semibold">
+              {{ x["Rating"] }}/5
+            </div>
+            <p class="text-gray-700">
+              {{ x["Comments"] }}
+            </p>
+            <p>{{ x['Timestamp'].strftime('%b-%d-%Y') }}</p>
+          </div>
+        {% else %}
+          <p class="text-gray-500">No reviews yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+        
+  
+  
+  
+  
+  
+  
+    =
+
+  
+
+
+
+
+
     </body>
 </html>
