@@ -4,74 +4,102 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>{{ product['Name'] }} | Core Collective</title>
   </head>
 
 
-    
-
-
-
-
-  <body>
-     <h1 class="text-3xl font-bold underline">
-      This is the item you are currently viewing.
-    
-       
-    </h1>
+{% include 'navbar.html.jinja' %}
+  <body class="bg-blue-50 min-h-screen text-gray-800 font-sans">
 
     
-    {{product ['Name'] }}</body>
-    <img src="{{product ['Image']}}">
-    {{product ['Description']}}
-    
+    <main class="max-w-6xl mx-auto px-6 py-12 space-y-12">
 
-<div>
-    <form method="post" action="/product/{{ product['ID'] }}/add_to_cart">
-        <label>Qty:</label>
-        <input type="number" name="qty" value="1" min="1" class="border rounded px-2 py-1 w-16 text-lg">
+      
+      <section class="bg-white rounded-3xl shadow-xl p-8 grid grid-cols-1 md:grid-cols-2 gap-10">
 
-
-        <button class="bg-indigo-600 text-white px-6 py-3 rounded-lg text-lg shadow hover:bg-indigo-700">
-        Add to Cart
-        </button>
-    
-    </form>
-    
-
-</div>
-    
-
-    <div class="space-y-4">
-        {% for x in reviews %}
-          <div class="border rounded p-4 bg-white shadow-sm">
-          <p>{{x["Name"]}}</p>
-            <div class="font-semibold">
-              {{ x["Rating"] }}/5
-            </div>
-            <p class="text-gray-700">
-              {{ x["Comments"] }}
-            </p>
-            <p>{{ x['Timestamp'].strftime('%b-%d-%Y') }}</p>
-          </div>
-        {% else %}
-          <p class="text-gray-500">No reviews yet.</p>
-        {% endfor %}
-      </div>
-    </div>
         
-  
-  
-  
-  
-  
-  
-    =
+        <div class="bg-blue-50 rounded-2xl p-6 flex justify-center items-center">
+          <img
+            src="{{ product['Image'] }}"
+            alt="{{ product['Name'] }}"
+            class="max-h-96 object-contain"
+          >
+        </div>
 
-  
+        
+        <div class="space-y-6">
 
+          <h1 class="text-4xl font-bold text-blue-700">
+            {{ product['Name'] }}
+          </h1>
 
+          <p class="text-gray-600 leading-relaxed">
+            {{ product['Description'] }}
+          </p>
 
+          
+          <form
+            method="post"
+            action="/product/{{ product['ID'] }}/add_to_cart"
+            class="flex items-center gap-4"
+          >
+            <label class="font-semibold">Qty:</label>
 
+            <input
+              type="number"
+              name="qty"
+              value="1"
+              min="1"
+              class="border border-blue-300 rounded-lg px-3 py-2 w-20 text-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            >
 
-    </body>
+            <button
+              class="bg-indigo-600 text-white px-6 py-3 rounded-xl text-lg font-semibold shadow hover:bg-indigo-700 transition"
+            >
+              Add to Cart
+            </button>
+          </form>
+
+        </div>
+      </section>
+
+      
+      <section class="space-y-6">
+
+        <h2 class="text-3xl font-bold text-blue-700">
+          Customer Reviews
+        </h2>
+
+        <div class="space-y-4">
+          {% for x in reviews %}
+            <div class="bg-white rounded-2xl shadow p-6 space-y-2">
+
+              <div class="flex justify-between items-center">
+                <p class="font-semibold text-gray-800">
+                  {{ x["Name"] }}
+                </p>
+                <span class="text-blue-600 font-bold">
+                  {{ x["Rating"] }}/5
+                </span>
+              </div>
+
+              <p class="text-gray-700">
+                {{ x["Comments"] }}
+              </p>
+
+              <p class="text-sm text-gray-400">
+                {{ x['Timestamp'].strftime('%b-%d-%Y') }}
+              </p>
+
+            </div>
+          {% else %}
+            <p class="text-gray-500">No reviews yet.</p>
+          {% endfor %}
+        </div>
+
+      </section>
+
+    </main>
+
+  </body>
 </html>

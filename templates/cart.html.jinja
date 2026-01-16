@@ -4,70 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>Christopher's Core Collective</title>
+    <title>Your Cart | Core Collective</title>
   </head>
 
+  <body class="bg-blue-50 text-gray-800 font-sans min-h-screen">
 
+    {% include 'navbar.html.jinja' %}
 
-<header class="bg-white shadow sticky top-0 z-50">
-      <nav class="max-w-6xl mx-auto flex items-center justify-between p-4">
-        <div class="text-2xl font-bold text-indigo-600">Core Collective</div>
-        <ul class="flex space-x-6">
-          <li><a href="/" class="hover:text-indigo-600">Home</a></li>
-          <li><a href="/browse" class="hover:text-indigo-600">Browse</a></li>
-          <li><a href="/cart" class="hover:text-indigo-600">Cart</a></li>
-          <li><a href="/login" class="hover:text-indigo-600">Login</a></li>
-          <li><a href="/signup" class="hover:text-indigo-600">Register</a></li>
-          <li><a href="/checkout" class="hover:text-indigo-600">Checkout</a></li>
-        </ul>
-      </nav>
-    </header>
+    <main class="max-w-6xl mx-auto p-6 space-y-6">
 
-  <main class="max-w-4xl mx-auto p-6 mb-5">
-        <h1>Your Cart</h1>
+      <h1 class="text-3xl font-bold text-blue-700">Your Cart</h1>
 
+      {% for x in cart %}
+        <div class="bg-white rounded-2xl shadow p-4 flex flex-col md:flex-row items-center justify-between gap-4">
 
-        {% for x in cart%}
-            <div class="cart-row">
-                <img src ="{{x['Image']}}">
-                <div>{{x['Name']}}</div>
-                <div>
-                    <form method ="post" action="/cart/{{ x['ProductID'] }}/update_qty">
-                    <input class="w-full" name ="qty" type="number" value="{{ x['Quantity']}}">
+          <!-- Product Image -->
+          <div class="flex-shrink-0">
+            <img src="{{ x['Image'] }}" alt="{{ x['Name'] }}" class="w-24 h-24 object-cover rounded-xl border border-blue-200">
+          </div>
 
+          <!-- Product Name -->
+          <div class="flex-1 font-semibold text-gray-800">{{ x['Name'] }}</div>
 
-                    </form>
-                    
-                    
-                   
-                </div>
-                <div>F{{x['Price']}}</div>
-                <div>F{{ x['Price'] * x['Quantity'] }}</div>
-            
-            
-            
-                
-                
-                
-                
-            </div>
-            <div class="flex justify-center">
-                <form method="post" action="/cart/{{ x['ProductID'] }}/remove">
-                   <button type="submit" class="text-red-600 hover:underline">
-                       Remove
-                   </button>
-                 </form>
-            </div>
+          <!-- Quantity -->
+          <div class="flex items-center gap-2">
+            <form method="post" action="/cart/{{ x['ProductID'] }}/update_qty">
+              <input
+                type="number"
+                name="qty"
+                value="{{ x['Quantity'] }}"
+                min="1"
+                class="w-20 border border-blue-200 rounded-xl px-3 py-1 text-center focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              >
+            </form>
+          </div>
 
-             
-            
-        {% endfor %}
-    
+          <!-- Price -->
+          <div class="font-semibold text-gray-700">${{ x['Price'] }}</div>
 
-            <div class="mt-6">
-                 <a href="/checkout" class="bg-indigo-600 text-white px-6 py-3 rounded hover:bg-indigo-700">
-                    Proceed to Checkout
-                 </a>
-            </div>
-            
+          <!-- Total -->
+          <div class="font-bold text-gray-900">${{ x['Price'] * x['Quantity'] }}</div>
+
+          <!-- Remove Button -->
+          <div>
+            <form method="post" action="/cart/{{ x['ProductID'] }}/remove">
+              <button type="submit" class="text-red-600 hover:underline font-semibold">Remove</button>
+            </form>
+          </div>
+
+        </div>
+      {% else %}
+        <p class="text-gray-500 text-center py-8">Your cart is empty.</p>
+      {% endfor %}
+
+      <!-- Checkout Button -->
+      {% if cart %}
+        <div class="flex justify-end mt-6">
+          <a href="/checkout"
+             class="bg-indigo-600 text-white px-6 py-3 rounded-2xl font-bold shadow hover:bg-indigo-700 transition">
+            Proceed to Checkout
+          </a>
+        </div>
+      {% endif %}
+
     </main>
+
+  </body>
+</html>

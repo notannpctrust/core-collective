@@ -260,7 +260,7 @@ def checkout():
 
 
    if request.method == 'POST':
-       # create the sale in the database
+       
        cursor.execute("INSERT INTO `Sale` (`UserID`) VALUES (%s)", ( current_user.id, ) )
        #store products bought
        sale = cursor.lastrowid
@@ -278,7 +278,7 @@ def checkout():
        #thank you screen
 
 
-       return redirect('/thank-you')      
+       return redirect('/thankyou')      
 
 
    total = 0
@@ -319,26 +319,30 @@ def remove_from_cart(product_id):
    return redirect ("/cart")
 
 
-app.route("/order")
+@app.route("/order-status")
 @login_required
 def order():
 
-    connection = connect_db
+    connection = connect_db()
     cursor = connection.cursor()
 
     cursor.execute("""
         SELECT
-        `SALE`.`ID`,
-        `SALE`.`Timestamp`,
-        SUM(`SaleProduct`.`Quantity`) AS 'Quantity'
-        SUM(`SaleProduct`.`Quantity` * `Product`.`Price`) AS 'Total'
+        `Sale`.`ID`,
+        `Sale`.`Timestamp`,
+        SUM(`SaleCart`.`Quantity`) AS 'Quantity',
+        SUM(`SaleCart`.`Quantity` * `Product`.`Price`) AS 'Total'
     FROM `Sale`
-    JOIN `SaleProduct` ON `SaleProduct`.`SaleID` = `Sale`.`ID`
-    JOIN `Product` ON `Product`.`ID` = `SaleProduct`.`ProductID`
+    JOIN `SaleCart` ON `SaleCart`.`SaleID` = `Sale`.`ID`
+    JOIN `Product` ON `Product`.`ID` = `SaleCart`.`ProductID`
     WHERE `UserID` = %s
-    GROUP BY `SALE`.`ID`
+    GROUP BY `Sale`.`ID`
         
     """, (current_user.id) )
+
+    result = cursor.fetchall()
+
+    return render_template("order-status.html.jinja", order = result)
 
 
 
@@ -346,5 +350,10 @@ def order():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html.jinja"), 404
+
+@app.route("/thankyou")
+def thankyou():
+   return render_template("thankyou.html.jinja")
+
 
 
